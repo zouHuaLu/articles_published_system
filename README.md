@@ -11,9 +11,19 @@
 
 `npm install --save typescript @types/node @types/react @types/react-dom @types/jest`
 
-项目中配置`less`:
+项目中配置`sass`:
 
-1. 
+1. 执行`yarn add node-sass`下载包（按理说执行`npm install node-sass --save`也应该有用，但是我这边报错了）。
+
+    报错如下：
+
+    ![npm安装sass报错](./imgs/err.png)
+
+    我的vscode和node版本都是最新的
+
+    建议大家用`yarn`来安装项目
+
+2. 将样式文件后缀改为`.scss`并在tsx或者js文件中引入，项目会自动编译。
 
 ---
 
