@@ -25,6 +25,20 @@
 
 2. 将样式文件后缀改为`.scss`并在tsx或者js文件中引入，项目会自动编译。
 
+为了实现自适应，给项目配置postcss-pxtorem
+
+1. 执行`yarn add lib-flexible postcss-pxtorem`
+
+2. 在应用入口引入`import 'lib-flexible'`
+
+3. 执行`npm run eject`可以打开`create-react-app`应用的配置文件
+
+4. 在`config/webpack.config.js`文件中配置postcss，位置及方法如下图：
+
+![引入postcss](./imgs/postcss.png)
+
+![配置postcss](./imgs/postcss2.png)
+
 ---
 
 # Getting Started with Create React App

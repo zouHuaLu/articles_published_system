@@ -64,6 +64,8 @@ const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
+// 引入postcss-pxtorem
+const pxtorem = require('postcss-pxtorem')
 
 const hasJsxRuntime = (() => {
   if (process.env.DISABLE_NEW_JSX_TRANSFORM === 'true') {
@@ -129,6 +131,13 @@ module.exports = function (webpackEnv) {
                 flexbox: 'no-2009',
               },
               stage: 3,
+            }),
+            // 配置postcss
+            pxtorem({
+              rootValue: 37.5, 
+              propWhiteList: [],
+              minPixelValue: 2,
+              exclude: /node_modules/i
             }),
             // Adds PostCSS Normalize as the reset css with default options,
             // so that it honors browserslist config in package.json
