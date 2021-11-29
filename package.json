@@ -152,9 +152,5 @@
     "presets": [
       "react-app"
     ]
-  },
-  "devDependencies": {
-    "less": "^3.0.4",
-    "less-loader": "^5.0.0"
   }
 }
