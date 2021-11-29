@@ -39,6 +39,12 @@
 
 ![配置postcss](./imgs/postcss2.png)
 
+UI库使用antdesign
+
+1. 安装antd，`yarn add antd`
+
+2. 在App.css 中导入样式`@import '~antd/dist/antd.css'`，然后在组件中引入相应的ui组件就可以用了。
+
 ---
 
 # Getting Started with Create React App
