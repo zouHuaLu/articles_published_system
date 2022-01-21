@@ -1,0 +1,17 @@
+.title{
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+.outer_wrap{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.login_form {
+    min-width: 300px;
+}
+.login_form_button {
+  width: 20%;
+}

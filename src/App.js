@@ -28,20 +28,16 @@
 // })
 
 // export default App;
-import {BrowserRouter,Routes,Route} from 'react-router-dom'
-import { LayoutWrap } from './components/Layout/LayoutWrap';
-import { Shuoshuo } from './components/Shuoshuo/Shuoshuo';
-import { Article } from './components/Articles/Article';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Login } from './components/Login/Login';
 import './App.scss';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<LayoutWrap />}>
-          <Route index  element={<Shuoshuo></Shuoshuo>}></Route>
-          <Route path='article' element={<Article></Article>}></Route>
-        </Route>
+          <Route path='/' element={<Login />}>
+          </Route>
       </Routes>
     </BrowserRouter>
   );
