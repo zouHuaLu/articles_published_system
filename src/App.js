@@ -35,6 +35,7 @@ import { LayoutWrap } from "./components/Layout/LayoutWrap";
 import { Home } from "./components/Home";
 import { Article } from "./components/Articles/Article";
 import { Shuoshuo } from "./components/Shuoshuo/Shuoshuo";
+import { WriteArticle } from "./components/WriteArticle";
 import "./App.scss";
 import { getItem } from "@/utils/localStorage.js";
 
@@ -52,6 +53,7 @@ function App() {
           <Route path="/home" element={<Home />}></Route>
           <Route path="/articles" element={<Article />}></Route>
           <Route path="/shuoshuo" element={<Shuoshuo />}></Route>
+          <Route path="/writeArticle" element={<WriteArticle />}></Route>
         </Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>

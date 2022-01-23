@@ -47,6 +47,7 @@
     "jest-resolve": "26.6.0",
     "jest-watch-typeahead": "0.6.1",
     "lib-flexible": "^0.3.2",
+    "marked": "^4.0.10",
     "mini-css-extract-plugin": "0.11.3",
     "mobx": "^6.3.12",
     "mobx-react-lite": "^3.2.3",
