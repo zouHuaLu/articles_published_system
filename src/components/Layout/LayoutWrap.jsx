@@ -1,26 +1,22 @@
 import { ConfigProvider, Layout } from "antd";
 import zhCN from "antd/lib/locale/zh_CN";
 import { observer } from "mobx-react-lite";
-import styles from "./index.module.scss";
-import {Outlet } from 'react-router-dom'
+import { Outlet } from "react-router-dom";
+import { HeaderNav } from "../Header";
 
-
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Footer } = Layout;
 
 export const LayoutWrap = observer(() => {
   return (
     <ConfigProvider locale={zhCN}>
       <Layout>
-        <Header>
-          <div className={styles.title}>文章发布系统</div>
+        <Header style={{ padding: 0 }}>
+          <HeaderNav></HeaderNav>
         </Header>
-        <Layout>
-          <Sider className={styles.slider}>左</Sider>
-          <Content>
-            <Outlet />
-          </Content>
-          <Sider className={styles.slider}>右</Sider>
-        </Layout>
+        <Content>
+          {/* 此处是嵌套路由 */}
+          <Outlet></Outlet>
+        </Content>
         <Footer></Footer>
       </Layout>
     </ConfigProvider>

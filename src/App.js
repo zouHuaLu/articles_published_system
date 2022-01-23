@@ -28,16 +28,32 @@
 // })
 
 // export default App;
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Login } from './components/Login/Login';
-import './App.scss';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Login } from "./components/Login/Login";
+import { NotFound } from "./components/NotFound";
+import { LayoutWrap } from "./components/Layout/LayoutWrap";
+import { Home } from "./components/Home";
+import { Article } from "./components/Articles/Article";
+import { Shuoshuo } from "./components/Shuoshuo/Shuoshuo";
+import "./App.scss";
+import { getItem } from "@/utils/localStorage.js";
 
 function App() {
+  const userInfo = getItem("userInfo");
   return (
     <BrowserRouter>
       <Routes>
-          <Route path='/' element={<Login />}>
-          </Route>
+        {userInfo?.isLogin ? (
+          <Route path="/" element={<Navigate to="/home" />}></Route>
+        ) : (
+          <Route path="/" element={<Login></Login>}></Route>
+        )}
+        <Route path="/" element={<LayoutWrap />}>
+          <Route path="/home" element={<Home />}></Route>
+          <Route path="/articles" element={<Article />}></Route>
+          <Route path="/shuoshuo" element={<Shuoshuo />}></Route>
+        </Route>
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>
   );

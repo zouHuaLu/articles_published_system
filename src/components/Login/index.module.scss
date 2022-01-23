@@ -1,17 +1,22 @@
-.title{
-    font-size: 16px;
-    margin-bottom: 20px;
+.title {
+  font-size: 16px;
+  margin-bottom: 20px;
 }
-.outer_wrap{
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.outer_wrap {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .login_form {
-    min-width: 300px;
+  min-width: 300px;
 }
 .login_form_button {
   width: 20%;
+}
+.sign_in {
+  margin-top: 5px;
+  cursor: pointer;
+  color: red;
 }
