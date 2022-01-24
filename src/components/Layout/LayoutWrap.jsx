@@ -10,7 +10,7 @@ const { Header, Content, Footer } = Layout;
 export const LayoutWrap = observer(() => {
   return (
     <ConfigProvider locale={zhCN}>
-      <Layout>
+
         <Header style={{ padding: 0 }}>
           <HeaderNav></HeaderNav>
         </Header>
@@ -19,7 +19,7 @@ export const LayoutWrap = observer(() => {
           <Outlet></Outlet>
         </Content>
         <Footer></Footer>
-      </Layout>
+
     </ConfigProvider>
   );
 });

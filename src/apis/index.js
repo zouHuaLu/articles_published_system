@@ -7,3 +7,11 @@ export const login = (data)=>{
         data:data
     })
 }
+
+export const addArticle = (data)=>{
+    return axios({
+        url:'blog/api/publish/addArticle',
+        method:'POST',
+        data,
+    })
+}

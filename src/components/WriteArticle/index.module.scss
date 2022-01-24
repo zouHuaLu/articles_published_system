@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  margin-top: 10px;
 }
 .input_wrap {
   width: 49%;
@@ -9,4 +10,48 @@
 .show_wrap {
   width: 49%;
   background-color: #fcfaf2;
+  padding: 10px;
+}
+
+// 以下为 Markdown代码以及图片样式
+.show_wrap table {
+  margin: 20px auto;
+  border: 1px solid #000;
+  border-spacing: 0; /*去掉单元格间隙*/
+  text-align: center;
+}
+.show_wrap table th,
+.show_wrap table td {
+  padding: 6px 14px;
+  border: 1px solid #000;
+}
+
+.show_wrap code {
+  color: red;
+  background-color: #eeeeee;
+  padding: 0 4px;
+}
+
+/* 图片 */
+.show_wrap p img {
+  display: block;
+  max-width: 100%;
+  margin: 14px auto;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.show_wrap blockquote {
+  background-color: #dfdfdf;
+  padding: 14px 40px;
+  font-size: 18px;
+  border-radius: 20px;
+  border: 2px rgb(105, 105, 105) dashed;
+}
+.show_wrap strong {
+  text-decoration: underline;
+}
+
+.show_wrap blockquote p {
+  margin: 0;
 }

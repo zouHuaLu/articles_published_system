@@ -1,54 +1,129 @@
-import marked from "marked";
+import { marked } from "marked";
+import hljs from "highlight.js";
+import "highlight.js/styles/github.css";
 import styles from "./index.module.scss";
+import "./github-dark.css";
 import { useState } from "react";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, Select, DatePicker, message } from "antd";
+import { addArticle } from "@/apis/index.js";
+// 用于净化输出的HTML代码
+import DOMPurify from "dompurify";
 
 export const WriteArticle = () => {
+  //代码高亮配置
+  hljs.configure({
+    tabReplace: "",
+    classPrefix: "hljs-",
+    languages: [
+      "CSS",
+      "HTML",
+      "JavaScript",
+      "Python",
+      "TypeScript",
+      "Markdown",
+    ],
+  });
+  // Markdown配置
+  marked.setOptions({
+    renderer: new marked.Renderer(),
+    highlight: function (code) {
+      return hljs.highlightAuto(code).value;
+    },
+    gfm: true, // 允许 Git Hub标准的markdown.
+    pedantic: false, // 不纠正原始模型任何的不良行为和错误（默认为false）
+    sanitize: false, // 对输出进行过滤（清理），将忽略任何已经输入的html代码（标签）
+    tables: true, // 允许支持表格语法（该选项要求 gfm 为true）
+    breaks: false, // 允许回车换行（该选项要求 gfm 为true）
+    smartLists: true, // 使用比原生markdown更时髦的列表
+    smartypants: false, // 使用更为时髦的标点
+  });
+
   const { TextArea } = Input;
+  const { Option } = Select;
   const [content, setContent] = useState("");
+  const onFinish = (values) => {
+    const time = values["releaseDate"].format("YYYY-MM-DD HH:mm:ss");
+    if (!content) {
+      message.warn("文章不能为空");
+      return;
+    }
+    const escapeContent = content.replace(/'/g,'&apos;')
+    delete values["releaseDate"];
+    let data = {
+      ...values,
+      content:escapeContent,
+      time,
+    };
+    addArticle(data);
+  };
+
+  const onChangeContent = (e) => {
+    setContent(e.target.value);
+  };
   return (
     <>
-      {/* <Form
-      name="basic"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
-      <Form.Item
-        label="文章标题"
-        name="title"
-        rules={[{ required: true, message: '请输入文章标题!' }]}
+      <Form
+        name="basic"
+        layout={"inline"}
+        onFinish={onFinish}
+        autoComplete="off"
       >
-        <Input />
-      </Form.Item>
+        <Form.Item
+          label="文章标题："
+          name="title"
+          rules={[{ required: true, message: "请输入文章标题!" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="文章分类："
+          name="classify"
+          rules={[{ required: true, message: "请选择一个分类!" }]}
+        >
+          <Select placeholder="请选择一个分类" allowClear>
+            <Option value="vue">vue</Option>
+            <Option value="react">react</Option>
+            <Option value="计算机基础">计算机基础</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item
+          label="文章标签："
+          name="tag"
+          rules={[{ required: true, message: "请选择一个标签!" }]}
+        >
+          <Select placeholder="请选择一个标签" allowClear>
+            <Option value="vue">vue</Option>
+            <Option value="react">react</Option>
+            <Option value="计算机基础">计算机基础</Option>
+          </Select>
+        </Form.Item>
 
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
-      >
-        <Input.Password />
-      </Form.Item>
+        <Form.Item
+          label="发布日期："
+          name="releaseDate"
+          rules={[{ required: true, message: "请选择日期!" }]}
+        >
+          <DatePicker showTime />
+        </Form.Item>
 
-      <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form> */}
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            发布
+          </Button>
+        </Form.Item>
+      </Form>
       <div className={styles.content_weap}>
         <div className={styles.input_wrap}>
-          <TextArea rows={50} />
+          <TextArea onChange={onChangeContent} rows={50} />
         </div>
         <div className={styles.show_wrap}>
-          <div>111</div>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(
+                marked.parse(content).replace(/<pre>/g, "<pre id='hljs'>")
+              ),
+            }}
+          ></div>
         </div>
       </div>
     </>
