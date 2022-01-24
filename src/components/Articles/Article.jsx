@@ -11,18 +11,18 @@ export const Article = observer(() => {
   const columns = [
     {
       title: "标题",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "title",
+      key: "title",
     },
     {
       title: "日期",
-      dataIndex: "age",
-      key: "age",
+      dataIndex: "time",
+      key: "time",
     },
     {
       title: "分类",
-      dataIndex: "address",
-      key: "address",
+      dataIndex: "classify",
+      key: "classify",
     },
     {
       title: "标签",
