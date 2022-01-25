@@ -1,13 +1,46 @@
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
-import { Table, Tag, Space, Button, Anchor } from "antd";
+import { Table, Space, Button, Anchor, message } from "antd";
+import { getAllArticles,deleteArticle } from "@/apis/index.js";
+import { useEffect } from "react";
+import { useStores } from "@/stores/index.js";
 
 export const Article = observer(() => {
   const { Link } = Anchor;
+  const { articlesList } = useStores();
   const naviagte = useNavigate();
   const toWriteArticle = () => {
     naviagte("/writeArticle");
   };
+
+  const getData = async() => {
+    const result = await getAllArticles();
+    articlesList.changeArticles(handleData(result.list));
+  }
+
+  useEffect(() => {
+    getData();
+  },[]);
+
+  // 处理返回的文章列表
+  const handleData = (data) => {
+    data.forEach((item, index) => {
+      item.key = index;
+      item.tags = item.tag;
+    });
+    return data;
+  };
+
+  // 删除一篇文章
+  const deleteIt = async(id) => {
+    let data = {id}
+    const {msg,code} = await deleteArticle(data)
+    if(code === 1) {
+      message.success(msg)
+      getData()
+    }
+  }
+
   const columns = [
     {
       title: "标题",
@@ -28,21 +61,6 @@ export const Article = observer(() => {
       title: "标签",
       key: "tags",
       dataIndex: "tags",
-      render: (tags) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? "geekblue" : "green";
-            if (tag === "loser") {
-              color = "volcano";
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
     },
     {
       title: "URL",
@@ -59,35 +77,11 @@ export const Article = observer(() => {
       render: (text, record) => (
         <Space size="middle">
           <Button type="primary">编辑</Button>
-          <Button type="primary" danger>
+          <Button type="primary" danger onClick={deleteIt.bind(this,record._id)}>
             删除
           </Button>
         </Space>
       ),
-    },
-  ];
-
-  const data = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      tags: ["nice", "developer"],
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-      tags: ["loser"],
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sidney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
     },
   ];
 
@@ -98,7 +92,7 @@ export const Article = observer(() => {
           写文章
         </Button>
       </div>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={articlesList.articles} />
     </>
   );
 });

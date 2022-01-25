@@ -41,7 +41,7 @@ export const WriteArticle = () => {
   const { TextArea } = Input;
   const { Option } = Select;
   const [content, setContent] = useState("");
-  const onFinish = (values) => {
+  const onFinish = async(values) => {
     const time = values["releaseDate"].format("YYYY-MM-DD HH:mm:ss");
     if (!content) {
       message.warn("文章不能为空");
@@ -54,7 +54,10 @@ export const WriteArticle = () => {
       content:escapeContent,
       time,
     };
-    addArticle(data);
+    const {code,msg} = await addArticle(data);
+    if(code === 1){
+      message.success(msg)
+    }
   };
 
   const onChangeContent = (e) => {
