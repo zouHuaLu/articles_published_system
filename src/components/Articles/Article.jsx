@@ -10,7 +10,7 @@ export const Article = observer(() => {
   const { articlesList } = useStores();
   const naviagte = useNavigate();
   const toWriteArticle = () => {
-    naviagte("/writeArticle");
+    naviagte("/writeArticle/new");
   };
 
   const getData = async() => {
@@ -39,6 +39,11 @@ export const Article = observer(() => {
       message.success(msg)
       getData()
     }
+  }
+
+  // 编辑一篇文章
+  const editIt = (id) => {
+    naviagte(`/writeArticle/${id}`)
   }
 
   const columns = [
@@ -76,7 +81,7 @@ export const Article = observer(() => {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          <Button type="primary">编辑</Button>
+          <Button type="primary" onClick={editIt.bind(this,record._id)}>编辑</Button>
           <Button type="primary" danger onClick={deleteIt.bind(this,record._id)}>
             删除
           </Button>

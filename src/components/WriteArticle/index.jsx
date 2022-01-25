@@ -3,13 +3,18 @@ import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
 import styles from "./index.module.scss";
 import "./github-dark.css";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Form, Input, Button, Select, DatePicker, message } from "antd";
 import { addArticle } from "@/apis/index.js";
 // 用于净化输出的HTML代码
 import DOMPurify from "dompurify";
+// 用于解析路由
+import {useParams} from 'react-router-dom'
+import {useStores} from '@/stores/index.js'
 
 export const WriteArticle = () => {
+  const {articlesList} = useStores()
+  let parmas = useParams()
   //代码高亮配置
   hljs.configure({
     tabReplace: "",
@@ -41,6 +46,7 @@ export const WriteArticle = () => {
   const { TextArea } = Input;
   const { Option } = Select;
   const [content, setContent] = useState("");
+  const [defaultContent,setDefaultContent] = useState("")
   const onFinish = async(values) => {
     const time = values["releaseDate"].format("YYYY-MM-DD HH:mm:ss");
     if (!content) {
@@ -62,7 +68,19 @@ export const WriteArticle = () => {
 
   const onChangeContent = (e) => {
     setContent(e.target.value);
+    setDefaultContent(e.target.value)
   };
+
+  useEffect(()=>{
+    if(parmas.articleId === 'new'){
+      setContent('')
+    }else{
+      let filterArticle =  articlesList.articles.filter(item => {
+        return Number(item._id) === Number( parmas.articleId)
+      })
+      setContent(filterArticle[0].content.replace(/&apos;/g,"'"))
+    }
+  },[])
   return (
     <>
       <Form
@@ -117,7 +135,7 @@ export const WriteArticle = () => {
       </Form>
       <div className={styles.content_weap}>
         <div className={styles.input_wrap}>
-          <TextArea onChange={onChangeContent} rows={50} />
+          <TextArea onChange={onChangeContent} value={content} rows={50} />
         </div>
         <div className={styles.show_wrap}>
           <div

@@ -53,7 +53,9 @@ function App() {
           <Route path="/home" element={<Home />}></Route>
           <Route path="/articles" element={<Article />}></Route>
           <Route path="/shuoshuo" element={<Shuoshuo />}></Route>
-          <Route path="/writeArticle" element={<WriteArticle />}></Route>
+          <Route path="/writeArticle" element={<WriteArticle />}>
+            <Route path=":articleId" element={<WriteArticle />}></Route>
+          </Route>
         </Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
