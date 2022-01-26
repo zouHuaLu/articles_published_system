@@ -15,7 +15,8 @@ const LoginBg = () => {
     cvs.height = window.innerHeight;
     cvs.style.cssText =
       "position:fixed;top:0px;left:0px;z-index:-1;opacity:1.0;";
-    document.body.appendChild(cvs);
+      // 加在Login组件上，这样其他组件就不会有这个canvas背景
+    document.getElementById('outer_wrap').appendChild(cvs);
 
     const ctx = cvs.getContext("2d");
 

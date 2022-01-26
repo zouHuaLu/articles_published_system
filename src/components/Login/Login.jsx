@@ -5,12 +5,10 @@ import styles from "./index.module.scss";
 import { login } from "../../apis/index";
 import { useStores } from "../../stores/index";
 import LoginBg from "./LoginBg";
-import { useNavigate } from "react-router-dom";
 import { setItem } from "@/utils/localStorage";
 
 export const Login = observer(() => {
   const { userInfo } = useStores();
-  const navigate = useNavigate();
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
@@ -28,7 +26,8 @@ export const Login = observer(() => {
         setItem("userInfo", {
           isLogin: true,
         });
-        navigate(`/articles`);
+        // 直接刷新页面让App.js路由去渲染登录后的页面组件
+        window.location.reload()
       }
     });
   };
@@ -53,7 +52,7 @@ export const Login = observer(() => {
   };
 
   return (
-    <div className={styles.outer_wrap}>
+    <div id="outer_wrap" className={styles.outer_wrap}>
       <Card title="发布系统">
         {/* <div className={styles.title}>发布系统</div> */}
         <Form
