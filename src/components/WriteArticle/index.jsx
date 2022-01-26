@@ -9,12 +9,13 @@ import { addArticle } from "@/apis/index.js";
 // 用于净化输出的HTML代码
 import DOMPurify from "dompurify";
 // 用于解析路由
-import {useParams} from 'react-router-dom'
+import {useParams,useNavigate} from 'react-router-dom'
 import {getArticle} from '@/apis/index.js'
 import moment from 'moment'
 
 export const WriteArticle = () => {
   const [form] = Form.useForm();
+  let navigate = useNavigate()
   let parmas = useParams()
   //代码高亮配置
   hljs.configure({
@@ -48,7 +49,6 @@ export const WriteArticle = () => {
   const { Option } = Select;
   const [content, setContent] = useState("");
   const onFinish = async(values) => {
-    console.log(values);
     const time = values["releaseDate"].format("YYYY-MM-DD HH:mm:ss");
     if (!content) {
       message.warn("文章不能为空");
@@ -71,6 +71,7 @@ export const WriteArticle = () => {
     const {code,msg} = await addArticle(data);
     if(code === 1){
       message.success(msg)
+      navigate('/articles')
     }
   };
 

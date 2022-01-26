@@ -20,7 +20,7 @@ export const Article = observer(() => {
 
   useEffect(() => {
     getData();
-  },[]);
+  },[]); // eslint-disable-line
 
   // 处理返回的文章列表
   const handleData = (data) => {
