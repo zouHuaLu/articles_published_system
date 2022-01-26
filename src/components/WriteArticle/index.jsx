@@ -10,10 +10,11 @@ import { addArticle } from "@/apis/index.js";
 import DOMPurify from "dompurify";
 // 用于解析路由
 import {useParams} from 'react-router-dom'
-import {useStores} from '@/stores/index.js'
+import {getArticle} from '@/apis/index.js'
+import moment from 'moment'
 
 export const WriteArticle = () => {
-  const {articlesList} = useStores()
+  const [form] = Form.useForm();
   let parmas = useParams()
   //代码高亮配置
   hljs.configure({
@@ -46,8 +47,8 @@ export const WriteArticle = () => {
   const { TextArea } = Input;
   const { Option } = Select;
   const [content, setContent] = useState("");
-  const [defaultContent,setDefaultContent] = useState("")
   const onFinish = async(values) => {
+    console.log(values);
     const time = values["releaseDate"].format("YYYY-MM-DD HH:mm:ss");
     if (!content) {
       message.warn("文章不能为空");
@@ -55,10 +56,17 @@ export const WriteArticle = () => {
     }
     const escapeContent = content.replace(/'/g,'&apos;')
     delete values["releaseDate"];
+    let article_id
+    if(parmas.articleId === 'new'){
+      article_id = 'new'
+    }else{
+      article_id = parmas.articleId
+    }
     let data = {
       ...values,
       content:escapeContent,
       time,
+      article_id
     };
     const {code,msg} = await addArticle(data);
     if(code === 1){
@@ -66,21 +74,34 @@ export const WriteArticle = () => {
     }
   };
 
+  // 根据id查询文章信息
+  const getArticleData = async(id) => {
+    let args = {
+      id
+    }
+    const {code,data} =  await getArticle(args)
+    if(code === 1){
+      form.setFieldsValue({
+        title:data[0].title,
+        classify:data[0].classify,
+        tag:data[0].tag,
+        releaseDate:moment(data[0].time,'YYYY-MM-DD HH:mm:ss')
+      })
+      setContent(data[0].content.replace(/&apos;/g,"'"))
+    }
+  }
+
   const onChangeContent = (e) => {
     setContent(e.target.value);
-    setDefaultContent(e.target.value)
   };
 
   useEffect(()=>{
     if(parmas.articleId === 'new'){
       setContent('')
     }else{
-      let filterArticle =  articlesList.articles.filter(item => {
-        return Number(item._id) === Number( parmas.articleId)
-      })
-      setContent(filterArticle[0].content.replace(/&apos;/g,"'"))
+      getArticleData(parmas.articleId)
     }
-  },[])
+  },[])// eslint-disable-line
   return (
     <>
       <Form
@@ -88,6 +109,7 @@ export const WriteArticle = () => {
         layout={"inline"}
         onFinish={onFinish}
         autoComplete="off"
+        form={form}
       >
         <Form.Item
           label="文章标题："

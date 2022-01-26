@@ -27,10 +27,19 @@ export const getAllArticles = () =>{
 }
 
 // 删除一篇文章
-export const deleteArticle = (id)=> {
+export const deleteArticle = (data)=> {
     return axios({
         url:'blog/api/publish/deleteArticle',
         method:'POST',
-        data:id
+        data
+    })
+}
+
+// 根据id获取一篇文章
+export const getArticle = (data)=>{
+    return axios({
+        url:'blog/api/publish/getArticle',
+        method:'POST',
+        data
     })
 }
